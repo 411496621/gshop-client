@@ -7,7 +7,7 @@ import ajax from './ajax'
 const baseUrl = '/api'
 
 export const reqAddress = (longitude,latitude)=> ajax(`${baseUrl}/position/${latitude},${longitude}`)
-export const reqCategory = ()=> ajax(`${baseUrl}/index_category`)
+export const reqCategorys = ()=> ajax(`${baseUrl}/index_category`)
 export const reqShops = (longitude,latitude)=> ajax(`${baseUrl}/shops`,{longitude,latitude})
 
 
