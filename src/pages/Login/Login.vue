@@ -5,16 +5,18 @@
         <div class="login_header">
           <h2 class="login_logo">硅谷外卖</h2>
           <div class="login_header_title">
-            <a href="javascript:;" class="on">短信登录</a>
-            <a href="javascript:;">密码登录</a>
+            <a href="javascript:;" :class="{on:showPhoneLogin}" @click="showPhoneLogin=true">短信登录</a>
+            <a href="javascript:;" :class="{on:!showPhoneLogin}" @click="showPhoneLogin=false">密码登录</a>
           </div>
         </div>
         <div class="login_content">
           <form>
-            <div class="on">
+            <div :class='{on:showPhoneLogin}'>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机号">
-                <button disabled="disabled" class="get_verification">获取验证码</button>
+                <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+                <button :disabled="(!rightPhone)||timeCount>0" class="get_verification" :class="{right_phone_number:rightPhone}" @click.prevent="sendMsg">
+                    {{timeCount>0?`已发送(${timeCount})s`:'获取验证码'}}
+                </button>
               </section>
               <section class="login_verification">
                 <input type="tel" maxlength="8" placeholder="验证码">
@@ -24,16 +26,16 @@
                 <a href="javascript:;">《用户服务协议》</a>
               </section>
             </div>
-            <div>
+            <div :class="{on:!showPhoneLogin}">
               <section>
                 <section class="login_message">
                   <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
                 </section>
                 <section class="login_verification">
-                  <input type="tel" maxlength="8" placeholder="密码">
-                  <div class="switch_button off">
-                    <div class="switch_circle"></div>
-                    <span class="switch_text">...</span>
+                  <input :type="showPwd?'text':'password'" maxlength="8" placeholder="密码">
+                  <div class="switch_button" :class="showPwd?'on':'off'" @click="showPwd=!showPwd">
+                    <div class="switch_circle" :class="{right:showPwd}"></div>
+                    <span class="switch_text">{{showPwd?'abc':''}}</span>
                   </div>
                 </section>
                 <section class="login_message">
@@ -55,7 +57,33 @@
 </template>
 
 <script>
-  export default {}
+  export default {
+    data(){
+      return{
+        showPhoneLogin:true,
+        phone:'',
+        timeCount:0,
+        showPwd:false
+      }
+    },
+    methods:{
+      sendMsg(){
+        this.timeCount = 30
+        const intervalId = setInterval(()=>{
+           this.timeCount--
+           if(this.timeCount===0){
+             clearInterval(intervalId)
+           }
+        },1000)
+      }
+    },
+    computed:{
+      rightPhone(){
+        const phone = this.phone
+        return  /^1\d{10}$/.test(phone)
+      }
+    }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
@@ -118,6 +146,8 @@
                 color #ccc
                 font-size 14px
                 background transparent
+                &.right_phone_number
+                   color #000
             .login_verification
               position relative
               margin-top 16px
@@ -157,6 +187,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999
