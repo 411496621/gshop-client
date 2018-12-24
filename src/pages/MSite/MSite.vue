@@ -131,8 +131,8 @@
                 font-size 13px
                 color #666
         .swiper-pagination
-          >span.swiper-pagination-bullet-active
-            background #02a774
+          span.swiper-pagination-bullet-active
+            background #02a774 !important
     .msite_shop_list
       top-border-1px(#e4e4e4)
       margin-top 10px
