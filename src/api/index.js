@@ -20,3 +20,8 @@ export const reqPwd = ({name,pwd,captcha})=> ajax(`${baseUrl}/login_pwd`,{name,p
 export const reqUserInfo = ()=> ajax(`${baseUrl}/userinfo`)
 // 用户登出
 export const reqLogout = ()=>ajax(`${baseUrl}/logout`)
+
+ // 获取shop相关的mock数据
+export const reqShopGoods = ()=> ajax('/goods')
+export const reqShopInfo = ()=> ajax('/info')
+export const reqShopRatings = ()=> ajax('/ratings')

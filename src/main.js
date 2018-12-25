@@ -5,6 +5,8 @@ import router from './router'
 import NavHeader from "./components/NavHeader/NavHeader"
 import Stars from "./components/Stars/Stars"
 import store from "./store"
+import './mock/mockServer'
+
 Vue.component('NavHeader',NavHeader)
 Vue.component("Stars",Stars)
 Vue.component(Button.name,Button)

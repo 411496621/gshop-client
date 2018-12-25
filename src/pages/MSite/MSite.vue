@@ -57,7 +57,10 @@
       ShopList
     },
     computed:{
-      ...mapState(['address','categorys']),
+      ...mapState({
+        address: state=> state.msite.address,
+        categorys: state => state.msite.categorys
+      }),
       categoryArr(){
         const bigArr = []  // 创建一个大数组 包裹几个小数组
         let smallArr = []
