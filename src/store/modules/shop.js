@@ -36,7 +36,7 @@ export const mutations = {
   [RECEIVE_SHOP_RATINGS](state,{ratings}){
     state.ratings = ratings
   },
-  [RECEIVE_SHOP_INFO](state,info){
+  [RECEIVE_SHOP_INFO](state,{info}){
     state.info = info
   }
 }

@@ -2,11 +2,12 @@
   <section class="msite">
     <!--首页头部-->
     <NavHeader  :title="address.name || '定位中...'">
-      <span class="header_search" slot="left">
+      <span class="header_search" slot="left" @click="$router.replace('/search')">
         <i class="iconfont icon-sousuo"></i>
       </span>
       <span class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
+        <i  v-if="user._id" class="iconfont icon-person" @click="$router.push('/userInfo')"></i>
+        <span  v-else class="header_login_text" @click="$router.push('/login')">登录|注册</span>
       </span>
     </NavHeader>
     <!--首页导航-->
@@ -59,7 +60,8 @@
     computed:{
       ...mapState({
         address: state=> state.msite.address,
-        categorys: state => state.msite.categorys
+        categorys: state => state.msite.categorys,
+        user: state=> state.user.user
       }),
       categoryArr(){
         const bigArr = []  // 创建一个大数组 包裹几个小数组
