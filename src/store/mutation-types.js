@@ -6,3 +6,6 @@ export const RECEIVE_CATEGORYS = 'receive_categorys' // 接受获取食品分类
 export const RECEIVE_SHOPS = 'receive_shops'  // 接受获取商家列表
 export const RECEIVE_USER = 'receive_user'   // 存储user
 export const RECEIVE_LOGOUT = 'receive_logout' // 清空user
+export const RECEIVE_SHOP_GOODS = 'receive_shop_goods'
+export const RECEIVE_SHOP_INFO = 'receive_shop_info'
+export const RECEIVE_SHOP_RATINGS = 'receive_shop_ratings'
