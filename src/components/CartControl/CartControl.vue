@@ -1,13 +1,26 @@
 <template>
   <div class="cartcontrol">
-    <div class="iconfont icon-remove_circle_outline"></div>
-    <div class="cart-count">1</div>
-    <div class="iconfont icon-add_circle"></div>
+    <transition name="move">
+      <div @click="computeCount(false)" v-show="food.count>0" class="iconfont icon-remove_circle_outline"></div>
+    </transition>
+    <div class="cart-count" v-if="food.count>0" >{{food.count}}</div>
+    <div @click="computeCount(true)" class="iconfont icon-add_circle"></div>
   </div>
 </template>
 
 <script>
-  export default {}
+  export default {
+    props:{
+      food:Object
+    },
+    methods:{
+      computeCount(isAdd){
+        const food = this.food
+        // 更新food数量
+        this.$store.dispatch("computeCount",{food,isAdd})
+      }
+    }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -27,6 +40,11 @@
       line-height 24px
       font-size 24px
       color $green
+      &.move-enter-active,&.move-leave-active
+        transition all .5s
+      &.move-enter,&.move-leave-to
+        opacity 0
+        transform translate(25px) rotate(180deg)
     .cart-count
       display: inline-block
       vertical-align: top

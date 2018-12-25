@@ -9,3 +9,5 @@ export const RECEIVE_LOGOUT = 'receive_logout' // 清空user
 export const RECEIVE_SHOP_GOODS = 'receive_shop_goods'
 export const RECEIVE_SHOP_INFO = 'receive_shop_info'
 export const RECEIVE_SHOP_RATINGS = 'receive_shop_ratings'
+export const ADD_FOOD_COUNT = 'add_food_count'
+export const REDUCE_FOOD_COUNT = 'reduce_food_count'

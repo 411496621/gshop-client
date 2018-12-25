@@ -1,6 +1,12 @@
-
+import Vue from "vue"
 import {reqShopGoods,reqShopInfo,reqShopRatings} from "../../api"
-import {RECEIVE_SHOP_GOODS,RECEIVE_SHOP_INFO,RECEIVE_SHOP_RATINGS} from "../mutation-types"
+import {
+  RECEIVE_SHOP_GOODS,
+  RECEIVE_SHOP_INFO,
+  RECEIVE_SHOP_RATINGS,
+  ADD_FOOD_COUNT,
+  REDUCE_FOOD_COUNT
+} from "../mutation-types"
 export const  state = {
   goods:[],
   ratings:[],
@@ -25,6 +31,13 @@ export const actions = {
     if(result.code===0){
       commit(RECEIVE_SHOP_INFO,{info:result.data})
     }
+  },
+  computeCount({commit},{isAdd,food}){
+     if(isAdd){ //加
+       commit(ADD_FOOD_COUNT,{food})
+     }else{
+       commit(REDUCE_FOOD_COUNT,{food})
+     }
   }
 }
 export const getters = {
@@ -39,7 +52,20 @@ export const mutations = {
   },
   [RECEIVE_SHOP_INFO](state,{info}){
     state.info = info
+  },
+  [ADD_FOOD_COUNT](state,{food}){
+      if(!food.count){ // 因为count是新添加的属性 所以没有数据绑定 无法更新界面
+        Vue.set(food, 'count',1)
+      }else{
+        food.count++
+      }
+  },
+  [REDUCE_FOOD_COUNT](state,{food}){
+      if(food.count>0){
+        food.count--
+      }
   }
+
 }
 
 export default {
