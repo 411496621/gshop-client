@@ -7,10 +7,11 @@ export const  state = {
   info:{}
 }
 export const actions = {
-  async getShopGoods({commit}){
+  async getShopGoods({commit},callback){
     const result = await reqShopGoods()
     if(result.code===0){
       commit(RECEIVE_SHOP_GOODS,{goods:result.data})
+      typeof callback==='function'&& callback()
     }
   },
   async getShopRatings({commit}){
