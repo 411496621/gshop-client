@@ -10,7 +10,8 @@ import {
 export const  state = {
   goods:[],
   ratings:[],
-  info:{}
+  info:{},
+  foods:[]
 }
 export const actions = {
   async getShopGoods({commit},callback){
@@ -41,6 +42,12 @@ export const actions = {
   }
 }
 export const getters = {
+  totalCount(state){
+    return state.foods.reduce((pre,food)=>pre + food.count,0)
+  },
+  totalPrice(state){
+    return state.foods.reduce((pre,food)=>pre + food.price*food.count,0)
+  }
 
 }
 export const mutations = {
@@ -56,6 +63,7 @@ export const mutations = {
   [ADD_FOOD_COUNT](state,{food}){
       if(!food.count){ // 因为count是新添加的属性 所以没有数据绑定 无法更新界面
         Vue.set(food, 'count',1)
+        state.foods.push(food)
       }else{
         food.count++
       }
@@ -63,9 +71,11 @@ export const mutations = {
   [REDUCE_FOOD_COUNT](state,{food}){
       if(food.count>0){
         food.count--
+        if(food.count===0){
+           state.foods.splice(state.foods.indexOf(food),1)
+        }
       }
   }
-
 }
 
 export default {

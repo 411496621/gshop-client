@@ -39,8 +39,8 @@
           </li>
         </ul>
       </div>
+      <ShopCart />
     </div>
-
     <Food ref="food" :food="food" />
   </div>
 
@@ -50,6 +50,7 @@
   import {mapState} from "vuex"
   import BScroll  from "better-scroll"
   import Food from "../../../components/Food/Food"
+  import ShopCart from "../../../components/ShopCart/ShopCart"
 
   export default {
     data(){
@@ -128,7 +129,8 @@
       }
     },
     components:{
-      Food
+      Food,
+      ShopCart
     }
   }
 </script>
