@@ -19,7 +19,7 @@
         </div>
       </div>
       <transition name="move">
-        <div class="shopcart-list" v-show="isShow">
+        <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
             <h1 class="title">购物车</h1>
             <span class="empty">清空</span>
@@ -36,10 +36,12 @@
             </ul>
           </div>
         </div>
+        <!--不止需要isShow还需要totalCount-->
+        <!--当count=0 时 永远为false isShow只有count>0才进行切换-->
       </transition>
     </div>
     <transition name="fade">
-      <div class="list-mask" v-show="isShow"></div>
+      <div @click="toggleShow" class="list-mask" v-show="listShow"></div>
     </transition>
 
   </div>
@@ -47,6 +49,7 @@
 
 <script>
   import {mapState,mapGetters} from "vuex"
+  import BScroll from "better-scroll"
   export default {
     data(){
       return{
@@ -55,11 +58,9 @@
     },
     methods:{
       toggleShow(){
-        /*if(this.totalCount===0){
-          this.isShow = false
-          return
-        }*/
-        this.isShow = !this.isShow
+        if(this.totalCount>0){
+          this.isShow = !this.isShow
+        }
       }
     },
     computed:{
@@ -79,6 +80,30 @@
            return "去结算"
          }
       },
+      listShow(){
+        console.log("===")
+        const {totalCount} = this
+        if(totalCount===0){
+          this.isShow = false
+          return false
+        }
+        /*当isShow为true时 将要显示列表结构了*/
+        if(this.isShow){
+          this.$nextTick(()=>{
+            if(!this.scroll){
+              // 设计成单例模式
+              this.scroll = new BScroll('.list-content',{
+                //当点击改变count触发listShow的时候 创建了多个BScroll
+                // 导致派发了多个click事件 所以需要设计成单例模式
+                click:true
+              })
+            }else{ // 如果dom结构发生了变化 必须重新计算better-scroll 确保滚动效果正常
+              this.scroll.refresh()
+            }
+          })
+        }
+        return this.isShow
+      }
     }
   }
 </script>
