@@ -53,8 +53,7 @@
     mounted(){
       this.$store.dispatch("getShopGoods",()=>{
         this.$nextTick(()=>{
-          new BScroll(".menu-wrapper")
-          new BScroll(".foods-wrapper") /*新版本可以在mounted里面直接new BScroll*/
+           this._initBScroll()
         })
       })
     },
@@ -62,6 +61,21 @@
       ...mapState({
         goods:state=> state.shop.goods
       })
+    },
+    methods:{
+      _initBScroll(){
+        /*
+        * better-scroll 默认会阻止浏览器的原生 click 事件。
+        * 当设置为 true，better-scroll 会派发一个 click 事件，
+        * 我们会给派发的 event 参数加一个私有属性 _constructed，值为 true。
+        * */
+        new BScroll(".menu-wrapper",{
+          click:true
+        })
+        new BScroll(".foods-wrapper",{
+          click:true
+        }) /*新版本可以在mounted里面直接new BScroll*/
+      }
     }
   }
 </script>
