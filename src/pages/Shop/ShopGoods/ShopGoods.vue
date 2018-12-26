@@ -2,8 +2,8 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul>
-          <li class="menu-item" v-for="(good,index) in goods" :key="index">
+        <ul ref="leftUl">
+          <li @click="clickItem(index)" class="menu-item " v-for="(good,index) in goods" :key="index" :class="{current:currentIndex===index}">
             <span class="text bottom-border-1px">
               <img class="icon" v-if="good.icon" :src="good.icon">
               {{good.name}}
@@ -12,7 +12,7 @@
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <ul ref="rightUl">
           <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -50,31 +50,74 @@
 
 
   export default {
+    data(){
+      return {
+        tops:[],
+        scrollY:0
+      }
+    },
     mounted(){
       this.$store.dispatch("getShopGoods",()=>{
         this.$nextTick(()=>{
            this._initBScroll()
+           this._initTops()
         })
       })
     },
     computed:{
       ...mapState({
         goods:state=> state.shop.goods
-      })
+      }),
+      currentIndex(){ // 跟scrollY和tops有关系
+        // 根据scrollY在tops数组里的索引值 确定currentIndex
+        const {tops,scrollY} = this
+        const index = tops.findIndex((top,index)=>{ // scrollY要大于等于当前的top值 并且小于top的下一个 [top,nextTop)
+           return  scrollY>=top && scrollY<tops[index+1]
+        })
+        if(this.index!==index&&this.leftScroll){ // 多加一层判断 避免undefined.scrollToElement的问题
+          this.index = index
+          const li = this.$refs.leftUl.children[index]
+          this.leftScroll.scrollToElement(li,300)
+        }
+        return index
+      }
     },
     methods:{
+      _initTops(){
+          let top = 0
+          this.tops.push(top)
+          const lis = this.$refs.rightUl.children
+          Array.prototype.slice.call(lis).forEach(li=>{
+             top += li.clientHeight
+             this.tops.push(top)
+          })
+      },
       _initBScroll(){
         /*
         * better-scroll 默认会阻止浏览器的原生 click 事件。
         * 当设置为 true，better-scroll 会派发一个 click 事件，
         * 我们会给派发的 event 参数加一个私有属性 _constructed，值为 true。
         * */
-        new BScroll(".menu-wrapper",{
+        this.leftScroll = new BScroll(".menu-wrapper",{
           click:true
         })
-        new BScroll(".foods-wrapper",{
-          click:true
-        }) /*新版本可以在mounted里面直接new BScroll*/
+        this.rightScroll = new BScroll(".foods-wrapper",{
+          click:true,
+          probeType:1   // 1 触摸的时候触发 非实时   2 触摸的时候出发  实时的 3 触摸和惯性的时候都会触发 实时的
+          // 如果触发scroll的频率比较高的话 currentIndex也会不停的调用 但最后改变的频率不大 所以选择1 不需要太高的触发频率
+        })
+        this.rightScroll.on('scroll',({y})=>{
+           this.scrollY = -y
+        })
+        /*新版本可以在mounted里面直接new BScroll*/
+        this.rightScroll.on('scrollEnd',({y})=>{
+          this.scrollY = -y
+        })
+      },
+      clickItem(index){
+        const y = this.tops[index]
+        this.scrollY = y   // 提前改变scrollY 即提前改变currentIndex
+        this.rightScroll.scrollTo(0,-y,300)
       }
     }
   }
