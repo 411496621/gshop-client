@@ -5,7 +5,8 @@ import {
   RECEIVE_SHOP_INFO,
   RECEIVE_SHOP_RATINGS,
   ADD_FOOD_COUNT,
-  REDUCE_FOOD_COUNT
+  REDUCE_FOOD_COUNT,
+  CLEAR_FOODS_COUNT
 } from "../mutation-types"
 export const  state = {
   goods:[],
@@ -40,6 +41,9 @@ export const actions = {
      }else{
        commit(REDUCE_FOOD_COUNT,{food})
      }
+  },
+  clearfoods({commit}){
+    commit(CLEAR_FOODS_COUNT)
   }
 }
 export const getters = {
@@ -91,6 +95,12 @@ export const mutations = {
            state.foods.splice(state.foods.indexOf(food),1)
         }
       }
+  },
+  [CLEAR_FOODS_COUNT](state){
+    state.foods.forEach(food=>{
+       food.count = 0
+    })
+    state.foods = []
   }
 }
 

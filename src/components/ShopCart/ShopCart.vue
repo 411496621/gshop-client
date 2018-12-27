@@ -12,7 +12,8 @@
           <div class="price" :class="{highlight:totalCount}">￥{{totalPrice}}</div>
           <div class="desc">另需配送费￥{{info.deliveryPrice}}元</div>
         </div>
-        <div class="content-right">
+        <!--click-->
+        <div @click="payFoods"  class="content-right">
           <div class="pay" :class="totalPrice<info.minPrice?'not-enough':'enough'">
             {{showText}}
           </div>
@@ -22,7 +23,7 @@
         <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
             <h1 class="title">购物车</h1>
-            <span class="empty">清空</span>
+            <span @click="clearFoods" class="empty">清空</span>
           </div>
           <div class="list-content">
             <ul>
@@ -49,6 +50,7 @@
 
 <script>
   import {mapState,mapGetters} from "vuex"
+  import {MessageBox,Toast} from 'mint-ui'
   import BScroll from "better-scroll"
   export default {
     data(){
@@ -61,6 +63,29 @@
         if(this.totalCount>0){
           this.isShow = !this.isShow
         }
+      },
+      payFoods(){
+        const {totalPrice} = this
+        const {minPrice} = this.info
+         if(totalPrice>=minPrice){ // 可以去结算了
+           MessageBox.confirm('确定要支付吗')
+             .then(action => {
+               Toast('支付成功',500)
+               this.$store.dispatch("clearfoods")
+             })
+             .catch(action =>{
+             })
+         }
+      },
+      clearFoods(){
+          MessageBox.confirm('确定要清空购物车吗')
+            .then(action => {
+              Toast('清除成功',500)
+              this.$store.dispatch("clearfoods")
+              this.isShow = false
+            })
+            .catch(action =>{
+            })
       }
     },
     computed:{

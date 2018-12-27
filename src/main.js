@@ -8,6 +8,7 @@ import store from "./store"
 import CartControl from './components/CartControl/CartControl'
 import './mock/mockServer'
 import Split from "./components/Split/Split"
+import "./filter"
 
 Vue.component('NavHeader',NavHeader)
 Vue.component("Stars",Stars)
