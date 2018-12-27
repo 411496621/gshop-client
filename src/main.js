@@ -7,11 +7,14 @@ import Stars from "./components/Stars/Stars"
 import store from "./store"
 import CartControl from './components/CartControl/CartControl'
 import './mock/mockServer'
+import Split from "./components/Split/Split"
 
 Vue.component('NavHeader',NavHeader)
 Vue.component("Stars",Stars)
 Vue.component('CartControl',CartControl)
+Vue.component("Split",Split)
 Vue.component(Button.name,Button)
+
 new Vue({  /*配置对象*/
   el:'#app',
   render:h=>h(App),

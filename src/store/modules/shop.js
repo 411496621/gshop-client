@@ -21,10 +21,11 @@ export const actions = {
       typeof callback==='function'&& callback()
     }
   },
-  async getShopRatings({commit}){
+  async getShopRatings({commit},callback){
     const result = await reqShopRatings()
     if(result.code===0){
       commit(RECEIVE_SHOP_RATINGS,{ratings:result.data})
+      typeof callback==='function'&& callback()
     }
   },
   async getShopInfo({commit}){
@@ -47,7 +48,22 @@ export const getters = {
   },
   totalPrice(state){
     return state.foods.reduce((pre,food)=>pre + food.price*food.count,0)
-  }
+  },
+  allRatingsCount(state){
+    return state.ratings.length
+  },
+  goodRatingsCount(state){
+    const {ratings} = state
+    return ratings.reduce((pre,rating)=>{
+      return pre + (rating.rateType===0? 1:0)
+    },0)
+  },
+  badRatingsCount(state){
+    const {ratings} = state
+    return ratings.reduce((pre,rating)=>{
+      return pre + (rating.rateType===1? 1:0)
+    },0)
+  },
 
 }
 export const mutations = {
