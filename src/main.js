@@ -9,6 +9,12 @@ import CartControl from './components/CartControl/CartControl'
 import './mock/mockServer'
 import Split from "./components/Split/Split"
 import "./filter"
+import VueLazyLoad from "vue-lazyload"
+import loading from "./common/images/loading.gif"
+
+Vue.use(VueLazyLoad,{
+  loading
+})
 
 Vue.component('NavHeader',NavHeader)
 Vue.component("Stars",Stars)

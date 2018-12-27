@@ -1,7 +1,11 @@
-import MSite from "../pages/MSite/MSite"
+/*import MSite from "../pages/MSite/MSite"
 import Search from "../pages/Search/Search"
 import Order from '../pages/Order/Order'
-import Profile from  "../pages/Profile/Profile"
+import Profile from  "../pages/Profile/Profile"*/
+const MSite = ()=> import("../pages/MSite/MSite")
+const Search = ()=> import("../pages/Search/Search")
+const Order = ()=> import("../pages/Order/Order")
+const Profile = ()=> import("../pages/Profile/Profile")
 import Login from "../pages/Login/Login"
 import Shop from "../pages/Shop/Shop"
 import ShopGoods from "../pages/Shop/ShopGoods/ShopGoods"
