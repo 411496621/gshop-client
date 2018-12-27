@@ -5,6 +5,7 @@
 import ajax from './ajax'
 /*const baseUrl = 'http://localhost:5000'*/
 const baseUrl = '/api'
+/*const baseUrl = ''*/
 
 export const reqAddress = (longitude,latitude)=> ajax(`${baseUrl}/position/${latitude},${longitude}`)
 export const reqCategorys = ()=> ajax(`${baseUrl}/index_category`)
